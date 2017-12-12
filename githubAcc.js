@@ -5,23 +5,21 @@ var app = express();
 
 app.use(express.static(__dirname + '/Json'));
 
-// var graph = JSON.parse(fs.readFileSync('Json/flare.json').toString());
-// graph.name = "lol";
-// fs.writeFileSync('Json/flare.json', JSON.stringify(graph));
 var options = {
-  url : 'https://api.github.com/orgs/Google',
+  url : 'https://api.github.com/orgs/google',
   headers : {
     'User-Agent' : 'request'
   }
 };
 
-var stuff;
+var data;
 function callback(error, response, body){
   if(!error && response.statusCode == 200){
-    stuff = JSON.parse(body);
-    //console.log(stuff);
-    formatData(stuff);
+    data = JSON.parse(body);
+    console.log(data);
+    formatData(data);
   }
+  else throw error;
 }
 request(options, callback);
 
@@ -38,11 +36,6 @@ var info = {"login":"google","id":1342004,"url":"https://api.github.com/orgs/goo
   "public_repos":1143,"public_gists":0,"followers":0,"following":0,
   "html_url":"https://github.com/google","created_at":"2012-01-18T01:30:18Z","updated_at":"2017-08-08T16:13:10Z"
   ,"type":"Organization"};
-//console.log(info["login"]);
-
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
 
 app.listen(3000);
 console.log('listening');
@@ -50,13 +43,18 @@ console.log('listening');
 function formatData(data){
   var gData;
   gData = {};
+  var keys = Object.keys(data);
   gData['name'] = data.login;
   gData['children'] = [];
-  for(x in data){
-    var item = data[x];
-    gData.children.push(item);
+  for(var i=0;i<keys.length; i++){
+    gData.children.push({"name":keys[i],"children":[{
+      "name":data[keys[i]], "size":"1000"
+    }]});
   }
   console.log(JSON.stringify(gData));
+  fs.writeFileSync('Json/flare.json', JSON.stringify(gData));
+  app.get('/', function(req, res){
+    res.sendFile(__dirname + '/index.html');
+  });
 }
-//formatData(stuff);
 //formatData(info);
