@@ -21,7 +21,7 @@ function callback(error, response, body){
   }
   else throw error;
 }
-//request(options, callback);
+request(options, callback);
 
 var info2 = fs.readFileSync('Json/test.json','utf8');
 info2 = JSON.parse(info2);
@@ -56,11 +56,14 @@ function formatData(data){
   //console.log(JSON.stringify(gData));
   fs.writeFileSync('Json/flare.json', JSON.stringify(gData));
   app.get('/members', function(req, res){
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/members.html');
   });
+  app.get('/mems', function(req, res){
+    res.sendFile(__dirname + '/index.html');
+  })
 }
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/home.html');
 });
-formatData(info2);
+//formatData(info2);
