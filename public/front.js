@@ -1,3 +1,4 @@
+//function for getting user info and formatting to display
 function getUser() {
   var formatStr ="empty";
   var user = document.getElementById("user").value;

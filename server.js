@@ -8,7 +8,9 @@ var client = github.client();
 app.use(express.static(__dirname + '/Json'));
 app.use(express.static(__dirname + '/public'));
 
+//assign local port
 var port = process.env.PORT || 3000;
+//headers
 var options = {
   url : 'https://api.github.com/orgs/google/members',
   headers : {
@@ -25,14 +27,16 @@ function callback(error, response, body){
   }
   else throw error;
 }
+//api request function
 request(options, callback);
-
+//for reading test json when api calls ran out
 var info2 = fs.readFileSync('Json/test.json','utf8');
 info2 = JSON.parse(info2);
+//listen at localhost:3000
 app.listen(port, function(){
  console.log('listening ' + port);
 });
-
+//function for formatting json for graph
 function formatData(data){
   var gData;
   gData = {};
@@ -57,23 +61,27 @@ function formatData(data){
       {"name":data[keys[i]].type},
       {"name":data[keys[i]].site_admin}]});
   }
-  //console.log(JSON.stringify(gData));
+  //writes fromatted json to json file
   fs.writeFileSync('Json/flare.json', JSON.stringify(gData));
+  //display graph page
   app.get('/members', function(req, res){
     res.sendFile(__dirname + '/members.html');
   });
+  //graph display within iframe
   app.get('/mems', function(req, res){
     res.sendFile(__dirname + '/index.html');
   })
 }
-
+//home page
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/home.html');
 });
+//user info get request
 app.get('/submit', function(req, res){
   var user = req.query.users;
   client.get('/users/'+user,{}, function(err, status, body, headers){
     res.send(body);
   });
 });
+//function call for json data when api calls ran out
 //formatData(info2);
