@@ -8,7 +8,7 @@ var client = github.client();
 app.use(express.static(__dirname + '/Json'));
 app.use(express.static(__dirname + '/public'));
 
-
+var port = process.env.PORT || 3000;
 var options = {
   url : 'https://api.github.com/orgs/google/members',
   headers : {
@@ -29,8 +29,9 @@ request(options, callback);
 
 var info2 = fs.readFileSync('Json/test.json','utf8');
 info2 = JSON.parse(info2);
-app.listen(3000);
-console.log('listening');
+app.listen(port, ()=>{
+ console.log('listening ' + port);
+});
 
 function formatData(data){
   var gData;
