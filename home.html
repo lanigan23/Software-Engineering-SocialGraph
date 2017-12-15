@@ -35,7 +35,6 @@
   </style>
 </head>
 <body>
-
 <div class="container-fluid">
   <div class="row content">
     <div class="col-sm-3 sidenav">
@@ -48,15 +47,17 @@
 
     <div class="col-sm-9">
       <hr>
-      <h2>Enter A User Name!</h2>
+      <script type="text/javascript" src="front.js">
+      </script>
+      <div id="data-injection">
+      <h2>Enter A Github User Name!</h2>
       <br>
-      <form role="form">
-        <div class="form-group">
-          <textarea class="form-control" rows="1" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-success">Click Me</button>
-      </form>
+      <input type="text" class="form-control" name="uname" id="user" required/>
+      <br>
+      <button id="btn" type="submit"name="bname" onclick="getUser()" class="btn btn-success">Get User!</button>
       <br><br>
+    </div>
+    <div id="user-d"></div>
     </div>
   </div>
 </div>
@@ -64,6 +65,5 @@
 <footer class="container-fluid">
   <p></p>
 </footer>
-
 </body>
 </html>

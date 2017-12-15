@@ -2,8 +2,12 @@ var express = require('express');
 var request = require('request');
 var fs = require('fs');
 var app = express();
+var github = require('octonode');
+var client = github.client();
 
 app.use(express.static(__dirname + '/Json'));
+app.use(express.static(__dirname + '/public'));
+
 
 var options = {
   url : 'https://api.github.com/orgs/google/members',
@@ -25,7 +29,6 @@ request(options, callback);
 
 var info2 = fs.readFileSync('Json/test.json','utf8');
 info2 = JSON.parse(info2);
-//console.log(info2[0].login);
 app.listen(3000);
 console.log('listening');
 
@@ -65,5 +68,11 @@ function formatData(data){
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/home.html');
+});
+app.get('/submit', function(req, res){
+  var user = req.query.users;
+  client.get('/users/'+user,{}, function(err, status, body, headers){
+    res.send(body);
+  });
 });
 //formatData(info2);
