@@ -1,1 +1,1 @@
-web: node githubAcc.js
+web node githubAcc.js
